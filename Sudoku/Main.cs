@@ -230,7 +230,7 @@ namespace Sudoku
                 {
                     DataGridViewImageCell cell = item as DataGridViewImageCell;
                     cell.Value = Properties.Resources.num5;
-                }
+                }               
             }
         }
 
@@ -438,16 +438,22 @@ namespace Sudoku
 
         private bool isSafe(int num, int row, int col)
         {
+            if (datagridview.Columns.Count == 0)
+            {
+                return false;
+            }
             bool issafe = true;
             for (int i = 0; i < 9; i++)
             {
                 if (grid[row, i] == num && i != col)
                 {
                     issafe = false;
+                    break;
                 }
                 if (grid[i, col] == num && i != row)
                 {
                     issafe = false;
+                    break;
                 }
             }
             if (!issafe)
@@ -458,7 +464,8 @@ namespace Sudoku
                     object sender = null;
                     EventArgs ev = null;
                     MessageBox.Show("You do maximum mistakes.", "Game over", MessageBoxButtons.OK);
-                    button_stop_Click(sender, ev);                    
+                    button_stop_Click(sender, ev);
+                    return false;                  
                 }
                 else 
                 {
