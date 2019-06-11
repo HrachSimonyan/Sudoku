@@ -13,12 +13,16 @@ namespace Sudoku
 {
     public partial class Main : Form
     {
+        #region Variables
+
         private bool started = false;
         private Stopwatch sw = new Stopwatch();
         static int[,] grid = new int[9, 9];
         private int mistakes = 0;
         ToolTip toolTip = new ToolTip();
         List<string> unhiddenCells = new List<string>();
+
+        #endregion
 
         public Main()
         {
@@ -28,7 +32,6 @@ namespace Sudoku
             toolTip.SetToolTip(this.button_min, "Minimize");
             toolTip.SetToolTip(this.button_help, "Help");
             toolTip.SetToolTip(this.button_delete, "Delete");
-
         }
 
         #region Events
@@ -136,6 +139,7 @@ namespace Sudoku
             button_play.Visible = true;
             button_pause.Visible = false;
             label_timer.Text = sw.Elapsed.ToString(@"hh\:mm\:ss");
+            enableAllNums();
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -168,6 +172,53 @@ namespace Sudoku
             }
         }
 
+        private void datagridview_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            if (unhiddenCells.Count == 81)
+            {
+                sw.Stop();
+                timer1.Stop();
+                datagridview.Enabled = false;
+                string congrats = "Congratulations You won" + Environment.NewLine + "Game level: " + label_game_level.Text + Environment.NewLine +
+                "Time: " + label_timer.Text + Environment.NewLine + "Do You want to start new game?";
+                if (MessageBox.Show(congrats, "Sudoku", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
+                    object sen = null;
+                    EventArgs ev = new EventArgs();
+                    button_stop_Click(sen, ev);
+                    button_play_Click(sen, ev);
+                }
+            }
+        }
+       
+         private void datagridview_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
+        {
+            Pen breakLines = new Pen(Color.Red, 2.0f);
+            Pen insideLines = new Pen(Color.Black, 1.0f);
+            e.Paint(e.CellBounds, DataGridViewPaintParts.All);
+
+            if (e.RowIndex == 2 || e.RowIndex == 5)
+            {
+                e.Graphics.DrawLine(breakLines, 0, e.CellBounds.Bottom - 1, e.CellBounds.Right, e.CellBounds.Bottom - 1);
+            }
+            else
+            {
+                e.Graphics.DrawLine(insideLines, 0, e.CellBounds.Bottom - 1, e.CellBounds.Right, e.CellBounds.Bottom - 1);
+            }
+            if (e.ColumnIndex == 2 || e.ColumnIndex == 5)
+            {
+                e.Graphics.DrawLine(breakLines, e.CellBounds.Right - 1, 0,
+                                              e.CellBounds.Right - 1, e.CellBounds.Bottom - 1);
+            }
+            else
+            {
+                e.Graphics.DrawLine(insideLines, e.CellBounds.Right - 1, 0,
+                                                  e.CellBounds.Right - 1, e.CellBounds.Bottom - 1);
+            }
+
+            e.Handled = true;
+        }
+
         #endregion
 
         #region Datagridview
@@ -190,123 +241,176 @@ namespace Sudoku
             }
         }
 
-        #endregion
+        #endregion       
 
         #region NumsClick     
 
         private void num1_Click(object sender, EventArgs e)
         {
+            if (!num_1.Enabled)
+            {
+                return;
+            }
             foreach (DataGridViewImageCell item in datagridview.SelectedCells)
             {
                 if (isSafe(1, item.RowIndex, item.ColumnIndex))
                 {
+                    unhiddenCells.Add(item.RowIndex.ToString() + item.ColumnIndex.ToString());
+                    num_1.Enabled = !checkCount(1);
                     DataGridViewImageCell cell = item as DataGridViewImageCell;
                     cell.Value = Properties.Resources.num1;
-                    unhiddenCells.Add(item.RowIndex.ToString() + item.ColumnIndex.ToString());
+                   
                 }
             }
         }
 
         private void num2_Click(object sender, EventArgs e)
         {
+            if (!num_2.Enabled)
+            {
+                return;
+            }
             foreach (DataGridViewImageCell item in datagridview.SelectedCells)
             {
                 if (isSafe(2, item.RowIndex, item.ColumnIndex))
                 {
+                    unhiddenCells.Add(item.RowIndex.ToString() + item.ColumnIndex.ToString());
+                    num_2.Enabled = !checkCount(2);
                     DataGridViewImageCell cell = item as DataGridViewImageCell;
                     cell.Value = Properties.Resources.num2;
-                    unhiddenCells.Add(item.RowIndex.ToString() + item.ColumnIndex.ToString());
+                   
                 }
             }
         }
 
         private void num3_Click(object sender, EventArgs e)
         {
+            if (!num_3.Enabled)
+            {
+                return;
+            }
             foreach (DataGridViewImageCell item in datagridview.SelectedCells)
             {
                 if (isSafe(3, item.RowIndex, item.ColumnIndex))
                 {
+                    unhiddenCells.Add(item.RowIndex.ToString() + item.ColumnIndex.ToString());
+                    num_3.Enabled = !checkCount(3);
                     DataGridViewImageCell cell = item as DataGridViewImageCell;
                     cell.Value = Properties.Resources.num3;
-                    unhiddenCells.Add(item.RowIndex.ToString() + item.ColumnIndex.ToString());
+                    
                 }
             }
         }
 
         private void num4_Click(object sender, EventArgs e)
         {
+            if (!num_4.Enabled)
+            {
+                return;
+            }
             foreach (DataGridViewImageCell item in datagridview.SelectedCells)
             {
                 if (isSafe(4, item.RowIndex, item.ColumnIndex))
                 {
+                    unhiddenCells.Add(item.RowIndex.ToString() + item.ColumnIndex.ToString());
+                    num_4.Enabled = !checkCount(4);
                     DataGridViewImageCell cell = item as DataGridViewImageCell;
                     cell.Value = Properties.Resources.num4;
-                    unhiddenCells.Add(item.RowIndex.ToString() + item.ColumnIndex.ToString());
+                    
                 }
             }
         }
 
         private void num5_Click(object sender, EventArgs e)
         {
+            if (!num_5.Enabled)
+            {
+                return;
+            }
             foreach (DataGridViewImageCell item in datagridview.SelectedCells)
             {
                 if (isSafe(5, item.RowIndex, item.ColumnIndex))
                 {
+                    unhiddenCells.Add(item.RowIndex.ToString() + item.ColumnIndex.ToString());
+                    num_5.Enabled = !checkCount(5);
                     DataGridViewImageCell cell = item as DataGridViewImageCell;
                     cell.Value = Properties.Resources.num5;
-                    unhiddenCells.Add(item.RowIndex.ToString() + item.ColumnIndex.ToString());
+                    
                 }
             }
         }
 
         private void num6_Click(object sender, EventArgs e)
         {
+            if (!num_6.Enabled)
+            {
+                return;
+            }
             foreach (DataGridViewImageCell item in datagridview.SelectedCells)
             {
                 if (isSafe(6, item.RowIndex, item.ColumnIndex))
                 {
-                    DataGridViewImageCell cell = item as DataGridViewImageCell;
-                    cell.Value = Properties.Resources.num6;
                     unhiddenCells.Add(item.RowIndex.ToString() + item.ColumnIndex.ToString());
+                    num_6.Enabled = !checkCount(6);
+                    DataGridViewImageCell cell = item as DataGridViewImageCell;
+                    cell.Value = Properties.Resources.num6;                    
                 }
             }
         }
 
         private void num7_Click(object sender, EventArgs e)
         {
+            if (!num_7.Enabled)
+            {
+                return;
+            }
             foreach (DataGridViewImageCell item in datagridview.SelectedCells)
             {
                 if (isSafe(7, item.RowIndex, item.ColumnIndex))
                 {
-                    DataGridViewImageCell cell = item as DataGridViewImageCell;
-                    cell.Value = Properties.Resources.num7;
                     unhiddenCells.Add(item.RowIndex.ToString() + item.ColumnIndex.ToString());
+                    DataGridViewImageCell cell = item as DataGridViewImageCell;
+                    num_7.Enabled = !checkCount(7);
+                    cell.Value = Properties.Resources.num7;
+                    
                 }
             }
         }
 
         private void num8_Click(object sender, EventArgs e)
         {
+            if (!num_8.Enabled)
+            {
+                return;
+            }
             foreach (DataGridViewImageCell item in datagridview.SelectedCells)
             {
                 if (isSafe(8, item.RowIndex, item.ColumnIndex))
                 {
-                    DataGridViewImageCell cell = item as DataGridViewImageCell;
-                    cell.Value = Properties.Resources.num8;
                     unhiddenCells.Add(item.RowIndex.ToString() + item.ColumnIndex.ToString());
+                    DataGridViewImageCell cell = item as DataGridViewImageCell;
+                    num_8.Enabled = !checkCount(8);
+                    cell.Value = Properties.Resources.num8;
+                    
                 }
             }
         }
 
         private void num9_Click(object sender, EventArgs e)
         {
+            if (!num_9.Enabled)
+            {
+                return;
+            }
             foreach (DataGridViewImageCell item in datagridview.SelectedCells)
             {
                 if (isSafe(9, item.RowIndex, item.ColumnIndex))
                 {
-                    DataGridViewImageCell cell = item as DataGridViewImageCell;
-                    cell.Value = Properties.Resources.num9;
                     unhiddenCells.Add(item.RowIndex.ToString() + item.ColumnIndex.ToString());
+                    DataGridViewImageCell cell = item as DataGridViewImageCell;
+                    num_9.Enabled = !checkCount(9);
+                    cell.Value = Properties.Resources.num9;
+                    
                 }
             }
         }
@@ -364,35 +468,25 @@ namespace Sudoku
             }
         }
 
-
         #endregion
 
-        private void datagridview_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
+        #region Methods
+
+     
+        private bool checkCount(int num)
         {
-            Pen breakLines = new Pen(Color.Red, 2.0f);
-            Pen insideLines = new Pen(Color.Black, 1.0f);
-            e.Paint(e.CellBounds, DataGridViewPaintParts.All);
-
-            if (e.RowIndex == 2 || e.RowIndex == 5)
+            int count = 0;
+            for (int i = 0; i < 9; i++)
             {
-                e.Graphics.DrawLine(breakLines, 0, e.CellBounds.Bottom - 1, e.CellBounds.Right, e.CellBounds.Bottom - 1);
+                for (int j = 0; j < 9; j++)
+                {
+                    if (num == grid[i, j] && unhiddenCells.Contains(i.ToString() + j.ToString()))
+                    {
+                        count++;
+                    }
+                }
             }
-            else
-            {
-                e.Graphics.DrawLine(insideLines, 0, e.CellBounds.Bottom - 1, e.CellBounds.Right, e.CellBounds.Bottom - 1);
-            }
-            if (e.ColumnIndex == 2 || e.ColumnIndex == 5)
-            {
-                e.Graphics.DrawLine(breakLines, e.CellBounds.Right - 1, 0,
-                                              e.CellBounds.Right - 1, e.CellBounds.Bottom - 1);
-            }
-            else
-            {
-                e.Graphics.DrawLine(insideLines, e.CellBounds.Right - 1, 0,
-                                                  e.CellBounds.Right - 1, e.CellBounds.Bottom - 1);
-            }
-
-            e.Handled = true;
+            return count == 9;
         }
 
         private void unhideNums(int level)
@@ -419,6 +513,7 @@ namespace Sudoku
                 default:
                     break;
             }
+            unhiddenCells.Clear();
             for (int i = 0; i < unhideCount; i++)
             {
                 col = rnd.Next(0, 8);
@@ -509,7 +604,21 @@ namespace Sudoku
             return issafe;
         }
 
-        #region generatNumber
+        private void enableAllNums() {
+            num_1.Enabled = true;
+            num_2.Enabled = true;
+            num_3.Enabled = true;
+            num_4.Enabled = true;
+            num_5.Enabled = true;
+            num_6.Enabled = true;
+            num_7.Enabled = true;
+            num_8.Enabled = true;
+            num_9.Enabled = true;
+        }
+
+        #endregion
+
+        #region numsGenerator
 
         private void generateNums()
         {
@@ -570,9 +679,11 @@ namespace Sudoku
                 }
             }
         }
-
-        #endregion
-
+       
+         #endregion
+       
         
+        
+
     }
 }

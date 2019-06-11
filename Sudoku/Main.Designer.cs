@@ -89,6 +89,7 @@
             this.datagridview.TabStop = false;
             this.datagridview.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.datagridview_CellClick);
             this.datagridview.CellPainting += new System.Windows.Forms.DataGridViewCellPaintingEventHandler(this.datagridview_CellPainting);
+            this.datagridview.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.datagridview_CellValueChanged);
             this.datagridview.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.datagridview_KeyPress);
             // 
             // label_timer
