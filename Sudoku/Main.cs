@@ -18,6 +18,7 @@ namespace Sudoku
         static int[,] grid = new int[9, 9];
         private int mistakes = 0;
         ToolTip toolTip = new ToolTip();
+        List<string> unhiddenCells = new List<string>();
 
         public Main()
         {
@@ -67,8 +68,8 @@ namespace Sudoku
         }
 
         private void button_play_Click(object sender, EventArgs e)
-        {           
-            if(datagridview.Columns.Count == 0 )
+        {
+            if (datagridview.Columns.Count == 0)
             {
                 GameLevel gl = new GameLevel();
                 if (gl.ShowDialog() == DialogResult.OK)
@@ -98,9 +99,9 @@ namespace Sudoku
                     started = true;
                     timer1.Start();
                     sw.Start();
-                }               
+                }
             }
-            else 
+            else
             {
                 datagridview.Enabled = true;
                 datagridview.Visible = true;
@@ -145,7 +146,26 @@ namespace Sudoku
 
         private void button_help_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("","",MessageBoxButtons.OKCancel);
+            MessageBox.Show("", "", MessageBoxButtons.OKCancel);
+        }
+
+        private void datagridview_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            int num = 0;
+            if (unhiddenCells.Contains(e.RowIndex.ToString() + e.ColumnIndex.ToString()))
+            {
+                num = grid[e.RowIndex, e.ColumnIndex];
+            }
+            for (int i = 0; i < 9; i++)
+            {
+                for (int j = 0; j < 9; j++)
+                {
+                    if (num == grid[i, j])
+                    {
+                        datagridview.Rows[i].Cells[j].Selected = unhiddenCells.Contains(i.ToString() + j.ToString());
+                    }
+                }
+            }
         }
 
         #endregion
@@ -182,6 +202,7 @@ namespace Sudoku
                 {
                     DataGridViewImageCell cell = item as DataGridViewImageCell;
                     cell.Value = Properties.Resources.num1;
+                    unhiddenCells.Add(item.RowIndex.ToString() + item.ColumnIndex.ToString());
                 }
             }
         }
@@ -194,6 +215,7 @@ namespace Sudoku
                 {
                     DataGridViewImageCell cell = item as DataGridViewImageCell;
                     cell.Value = Properties.Resources.num2;
+                    unhiddenCells.Add(item.RowIndex.ToString() + item.ColumnIndex.ToString());
                 }
             }
         }
@@ -206,6 +228,7 @@ namespace Sudoku
                 {
                     DataGridViewImageCell cell = item as DataGridViewImageCell;
                     cell.Value = Properties.Resources.num3;
+                    unhiddenCells.Add(item.RowIndex.ToString() + item.ColumnIndex.ToString());
                 }
             }
         }
@@ -218,6 +241,7 @@ namespace Sudoku
                 {
                     DataGridViewImageCell cell = item as DataGridViewImageCell;
                     cell.Value = Properties.Resources.num4;
+                    unhiddenCells.Add(item.RowIndex.ToString() + item.ColumnIndex.ToString());
                 }
             }
         }
@@ -230,7 +254,8 @@ namespace Sudoku
                 {
                     DataGridViewImageCell cell = item as DataGridViewImageCell;
                     cell.Value = Properties.Resources.num5;
-                }               
+                    unhiddenCells.Add(item.RowIndex.ToString() + item.ColumnIndex.ToString());
+                }
             }
         }
 
@@ -242,6 +267,7 @@ namespace Sudoku
                 {
                     DataGridViewImageCell cell = item as DataGridViewImageCell;
                     cell.Value = Properties.Resources.num6;
+                    unhiddenCells.Add(item.RowIndex.ToString() + item.ColumnIndex.ToString());
                 }
             }
         }
@@ -254,6 +280,7 @@ namespace Sudoku
                 {
                     DataGridViewImageCell cell = item as DataGridViewImageCell;
                     cell.Value = Properties.Resources.num7;
+                    unhiddenCells.Add(item.RowIndex.ToString() + item.ColumnIndex.ToString());
                 }
             }
         }
@@ -266,6 +293,7 @@ namespace Sudoku
                 {
                     DataGridViewImageCell cell = item as DataGridViewImageCell;
                     cell.Value = Properties.Resources.num8;
+                    unhiddenCells.Add(item.RowIndex.ToString() + item.ColumnIndex.ToString());
                 }
             }
         }
@@ -278,6 +306,7 @@ namespace Sudoku
                 {
                     DataGridViewImageCell cell = item as DataGridViewImageCell;
                     cell.Value = Properties.Resources.num9;
+                    unhiddenCells.Add(item.RowIndex.ToString() + item.ColumnIndex.ToString());
                 }
             }
         }
@@ -288,6 +317,10 @@ namespace Sudoku
             {
                 DataGridViewImageCell cell = item as DataGridViewImageCell;
                 cell.Value = Properties.Resources.help_36px;
+                if (unhiddenCells.Contains(item.RowIndex.ToString() + item.ColumnIndex.ToString()))
+                {
+                    unhiddenCells.Remove(item.RowIndex.ToString() + item.ColumnIndex.ToString());
+                }
             }
         }
 
@@ -334,38 +367,33 @@ namespace Sudoku
 
         #endregion
 
-        //Painting cells, after that cells not editable
-        //private void datagridview_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
-        //{
-        //    Pen breakLines = new Pen(Color.Red, 2.0f);
-        //    Pen insideLines = new Pen(Color.Black, 1.0f);
+        private void datagridview_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
+        {
+            Pen breakLines = new Pen(Color.Red, 2.0f);
+            Pen insideLines = new Pen(Color.Black, 1.0f);
+            e.Paint(e.CellBounds, DataGridViewPaintParts.All);
 
-        //    using (Brush b = new SolidBrush(datagridview.DefaultCellStyle.BackColor))
-        //        e.Graphics.FillRectangle(b, e.CellBounds);
+            if (e.RowIndex == 2 || e.RowIndex == 5)
+            {
+                e.Graphics.DrawLine(breakLines, 0, e.CellBounds.Bottom - 1, e.CellBounds.Right, e.CellBounds.Bottom - 1);
+            }
+            else
+            {
+                e.Graphics.DrawLine(insideLines, 0, e.CellBounds.Bottom - 1, e.CellBounds.Right, e.CellBounds.Bottom - 1);
+            }
+            if (e.ColumnIndex == 2 || e.ColumnIndex == 5)
+            {
+                e.Graphics.DrawLine(breakLines, e.CellBounds.Right - 1, 0,
+                                              e.CellBounds.Right - 1, e.CellBounds.Bottom - 1);
+            }
+            else
+            {
+                e.Graphics.DrawLine(insideLines, e.CellBounds.Right - 1, 0,
+                                                  e.CellBounds.Right - 1, e.CellBounds.Bottom - 1);
+            }
 
-        //    e.PaintContent(e.ClipBounds);
-
-        //    if (e.RowIndex == 2 || e.RowIndex == 5 || e.RowIndex == 8)  // column header
-        //    {
-        //        e.Graphics.DrawLine(breakLines, 0, e.CellBounds.Bottom - 1, e.CellBounds.Right, e.CellBounds.Bottom - 1);
-        //    }
-        //    else
-        //    {
-        //        e.Graphics.DrawLine(insideLines, 0, e.CellBounds.Bottom - 1, e.CellBounds.Right, e.CellBounds.Bottom - 1);
-        //    }
-        //    if (e.ColumnIndex == 2 || e.ColumnIndex == 5)  // row header (*)
-        //    {
-        //        e.Graphics.DrawLine(breakLines, e.CellBounds.Right - 1, 0,
-        //                                      e.CellBounds.Right - 1, e.CellBounds.Bottom - 1);
-        //    }
-        //    else
-        //    {
-        //        e.Graphics.DrawLine(insideLines, e.CellBounds.Right - 1, 0,
-        //                                          e.CellBounds.Right - 1, e.CellBounds.Bottom - 1);
-        //    }
-
-        //    e.Handled = true;
-        //}
+            e.Handled = true;
+        }
 
         private void unhideNums(int level)
         {
@@ -373,7 +401,7 @@ namespace Sudoku
             int col = 0;
             int row = 0;
             int unhideCount = 0;
-            List<string> list = new List<string>();
+
             switch (level)
             {
                 case 1:
@@ -395,12 +423,12 @@ namespace Sudoku
             {
                 col = rnd.Next(0, 8);
                 row = rnd.Next(0, 8);
-                while (list.Contains(row.ToString() + col.ToString()))
+                while (unhiddenCells.Contains(row.ToString() + col.ToString()))
                 {
                     col = rnd.Next(0, 8);
                     row = rnd.Next(0, 8);
                 }
-                list.Add(row.ToString() + col.ToString());
+                unhiddenCells.Add(row.ToString() + col.ToString());
                 switch (grid[row, col])
                 {
                     case 1:
@@ -465,14 +493,14 @@ namespace Sudoku
                     EventArgs ev = null;
                     MessageBox.Show("You do maximum mistakes.", "Game over", MessageBoxButtons.OK);
                     button_stop_Click(sender, ev);
-                    return false;                  
+                    return false;
                 }
-                else 
+                else
                 {
                     label_mistakes.Text = mistakes.ToString() + "/3";
                     MessageBox.Show("Wrong num in " + (row + 1).ToString() + "x" + (col + 1).ToString() + " cell", "Wrong", MessageBoxButtons.OK);
                 }
-                
+
             }
             else
             {
@@ -543,10 +571,8 @@ namespace Sudoku
             }
         }
 
-
-
         #endregion
 
-       
+        
     }
 }
