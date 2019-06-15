@@ -150,8 +150,7 @@
             // checkBox_sound
             // 
             this.checkBox_sound.AutoSize = true;
-            this.checkBox_sound.Checked = true;
-            this.checkBox_sound.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox_sound.Enabled = false;
             this.checkBox_sound.Font = new System.Drawing.Font("Sylfaen", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.checkBox_sound.Location = new System.Drawing.Point(7, 31);
             this.checkBox_sound.Name = "checkBox_sound";

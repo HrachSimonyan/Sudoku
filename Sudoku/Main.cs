@@ -76,8 +76,7 @@ namespace Sudoku
         private void button_play_Click(object sender, EventArgs e)
         {
             if (!started)
-            {
-                started = true;
+            {                
                 if (datagridview.Columns.Count == 0)
                 {
                     startNewGame();
@@ -86,8 +85,8 @@ namespace Sudoku
                 {
                     datagridview.Enabled = true;
                     datagridview.Visible = true;
+                    button_play.Image = Properties.Resources.pause_32px;
                     started = true;
-                    timer1.Start();
                     sw.Start();
                 }
 
@@ -98,7 +97,6 @@ namespace Sudoku
                 button_play.Image = Properties.Resources.play_32px;
                 datagridview.Visible = false;
                 datagridview.Enabled = false;
-                timer1.Stop();
                 sw.Stop();
             }
         }
@@ -157,7 +155,6 @@ namespace Sudoku
                 unhideNums(gameLevel);
                 button_play.Image = Properties.Resources.pause_32px;
                 started = true;
-                timer1.Start();
                 sw.Start();
             }
             else
@@ -169,6 +166,11 @@ namespace Sudoku
                 button_settings_save.Text = "Ok";
             }
 
+        }
+
+        private void button_restart_Click(object sender, EventArgs e)
+        {
+            restartGame();
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -206,14 +208,11 @@ namespace Sudoku
             if (unhiddenCells.Count == 81)
             {
                 sw.Stop();
-                timer1.Stop();
                 datagridview.Enabled = false;
                 string congrats = "Congratulations You won" + Environment.NewLine + "Game level: " + label_game_level.Text + Environment.NewLine +
                 "Time: " + label_timer.Text + Environment.NewLine + "Do You want to start new game?";
                 if (MessageBox.Show(congrats, "Sudoku", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
-                    object sen = null;
-                    EventArgs ev = new EventArgs();
                     restartGame();                    
                 }
                 else {
@@ -252,6 +251,8 @@ namespace Sudoku
 
         private void button_settings_Click(object sender, EventArgs e)
         {
+            datagridview.Enabled = false;
+            sw.Stop();
             label5.Text = "Settings";
             button_settings_save.Text = "Save";
             checkBox_sound.Visible = true;
@@ -724,6 +725,11 @@ namespace Sudoku
 
         private void button_settings_save_Click(object sender, EventArgs e)
         {
+            if (newGameLavel == 0)
+            {
+                MessageBox.Show("Please choose one of game levels");
+                return;
+            }
             if (gameLevel == 0)
             {
                 gameLevel = newGameLavel;
@@ -738,7 +744,11 @@ namespace Sudoku
                 timer1.Start();
                 sw.Start();
             }
-
+            if (started)
+            {
+                sw.Start();
+                datagridview.Enabled = true;
+            }
             soundOn = !checkBox_sound.Checked;
             panel_settings.Visible = false;
             gameLevel = newGameLavel;
@@ -792,14 +802,16 @@ namespace Sudoku
         private void button_settings_cancel_Click(object sender, EventArgs e)
         {
             panel_settings.Visible = false;
+            if (started && datagridview.Columns.Count > 0)
+            {
+                sw.Start();
+                datagridview.Enabled = true;
+            }
         }
 
         #endregion
 
-        private void button_restart_Click(object sender, EventArgs e)
-        {
-            restartGame();
-        }
+      
     }
 
     public enum GameLevels{
