@@ -21,6 +21,9 @@ namespace Sudoku
         private int mistakes = 0;
         ToolTip toolTip = new ToolTip();
         List<string> unhiddenCells = new List<string>();
+        private int gameLevel = 0;
+        private int newGameLavel = 0;
+        private bool soundOn = false;
 
         #endregion
 
@@ -72,74 +75,100 @@ namespace Sudoku
 
         private void button_play_Click(object sender, EventArgs e)
         {
-            if (datagridview.Columns.Count == 0)
+            if (!started)
             {
-                GameLevel gl = new GameLevel();
-                if (gl.ShowDialog() == DialogResult.OK)
+                started = true;
+                if (datagridview.Columns.Count == 0)
                 {
-                    createGrid();
-                    generateNums();
+                    startNewGame();
+                }
+                else
+                {
                     datagridview.Enabled = true;
                     datagridview.Visible = true;
-                    switch (gl.gameLevel)
-                    {
-                        case 1:
-                            label_game_level.Text = "Easy";
-                            break;
-                        case 2:
-                            label_game_level.Text = "Normal";
-                            break;
-                        case 3:
-                            label_game_level.Text = "Hard";
-                            break;
-                        case 4:
-                            label_game_level.Text = "Expert";
-                            break;
-                        default:
-                            break;
-                    }
-                    unhideNums(gl.gameLevel);
                     started = true;
                     timer1.Start();
                     sw.Start();
                 }
+
             }
             else
             {
+                started = false;
+                button_play.Image = Properties.Resources.play_32px;
+                datagridview.Visible = false;
+                datagridview.Enabled = false;
+                timer1.Stop();
+                sw.Stop();
+            }
+        }
+
+        private void restartGame()
+        {
+
+            if (mistakes != 3 && unhiddenCells.Count != 81)
+            {
+                if (MessageBox.Show("Start new game?", "New game", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
+                    mistakes = 0;
+                    label_mistakes.Text = mistakes.ToString() + "/3";
+                    label_game_level.Text = "";
+                    datagridview.Rows.Clear();
+                    datagridview.Columns.Clear();
+                    datagridview.Enabled = false;
+                    sw.Reset();
+                    started = false;
+                    button_play.Image = Properties.Resources.play_32px;
+                    label_timer.Text = sw.Elapsed.ToString(@"hh\:mm\:ss");
+                    enableAllNums();
+                    startNewGame();
+                }
+                else {
+                    return;
+                }
+            }
+            else
+            {
+                mistakes = 0;
+                label_mistakes.Text = mistakes.ToString() + "/3";
+                label_game_level.Text = "";
+                datagridview.Rows.Clear();
+                datagridview.Columns.Clear();
+                datagridview.Enabled = false;
+                sw.Reset();
+                started = false;
+                button_play.Image = Properties.Resources.play_32px;
+                label_timer.Text = sw.Elapsed.ToString(@"hh\:mm\:ss");
+                enableAllNums();
+                startNewGame();
+            }
+        }
+
+        private void startNewGame()
+        {
+
+            if (gameLevel != 0)
+            {
+                label_game_level.Text = Enum.GetName(typeof(GameLevels), gameLevel);
+                createGrid();
+                generateNums();
                 datagridview.Enabled = true;
                 datagridview.Visible = true;
+                unhideNums(gameLevel);
+                button_play.Image = Properties.Resources.pause_32px;
                 started = true;
                 timer1.Start();
                 sw.Start();
             }
-            button_play.Visible = false;
-            button_pause.Visible = true;
-        }
+            else
+            {
+                label5.Text = "Choose game level";
+                groupBox_gameLevel.Text = "";
+                checkBox_sound.Visible = false;
+                panel_settings.Visible = true;
+                button_settings_save.Text = "Ok";
+            }
 
-        private void button_pause_Click(object sender, EventArgs e)
-        {
-            button_play.Visible = true;
-            button_pause.Visible = false;
-            datagridview.Visible = false;
-            started = false;
-            timer1.Stop();
-            sw.Stop();
-        }
-
-        private void button_stop_Click(object sender, EventArgs e)
-        {
-            mistakes = 0;
-            label_game_level.Text = "";
-            label_mistakes.Text = mistakes.ToString() + "/3";
-            datagridview.Rows.Clear();
-            datagridview.Columns.Clear();
-            datagridview.Enabled = false;
-            sw.Reset();
-            started = false;
-            button_play.Visible = true;
-            button_pause.Visible = false;
-            label_timer.Text = sw.Elapsed.ToString(@"hh\:mm\:ss");
-            enableAllNums();
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -185,13 +214,15 @@ namespace Sudoku
                 {
                     object sen = null;
                     EventArgs ev = new EventArgs();
-                    button_stop_Click(sen, ev);
-                    button_play_Click(sen, ev);
+                    restartGame();                    
+                }
+                else {
+                    button_play.Enabled = false;
                 }
             }
         }
-       
-         private void datagridview_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
+
+        private void datagridview_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
         {
             Pen breakLines = new Pen(Color.Red, 2.0f);
             Pen insideLines = new Pen(Color.Black, 1.0f);
@@ -219,6 +250,15 @@ namespace Sudoku
             e.Handled = true;
         }
 
+        private void button_settings_Click(object sender, EventArgs e)
+        {
+            label5.Text = "Settings";
+            button_settings_save.Text = "Save";
+            checkBox_sound.Visible = true;
+            panel_settings.Visible = true;
+            groupBox_gameLevel.Text = "Game level";
+        }
+
         #endregion
 
         #region Datagridview
@@ -234,7 +274,7 @@ namespace Sudoku
                 ic.HeaderText = "";
                 ic.Name = "col" + (i + 1).ToString();
                 ic.Width = datagridview.Width / 9;
-                ic.Image = Properties.Resources.help_36px;
+                ic.Image = Properties.Resources.help_32px1;
                 datagridview.Columns.Add(ic);
                 datagridview.Rows.Add();
                 datagridview.Rows[i].Height = datagridview.Height / 9;
@@ -259,7 +299,7 @@ namespace Sudoku
                     num_1.Enabled = !checkCount(1);
                     DataGridViewImageCell cell = item as DataGridViewImageCell;
                     cell.Value = Properties.Resources.num1;
-                   
+
                 }
             }
         }
@@ -278,7 +318,7 @@ namespace Sudoku
                     num_2.Enabled = !checkCount(2);
                     DataGridViewImageCell cell = item as DataGridViewImageCell;
                     cell.Value = Properties.Resources.num2;
-                   
+
                 }
             }
         }
@@ -297,7 +337,7 @@ namespace Sudoku
                     num_3.Enabled = !checkCount(3);
                     DataGridViewImageCell cell = item as DataGridViewImageCell;
                     cell.Value = Properties.Resources.num3;
-                    
+
                 }
             }
         }
@@ -316,7 +356,7 @@ namespace Sudoku
                     num_4.Enabled = !checkCount(4);
                     DataGridViewImageCell cell = item as DataGridViewImageCell;
                     cell.Value = Properties.Resources.num4;
-                    
+
                 }
             }
         }
@@ -335,7 +375,7 @@ namespace Sudoku
                     num_5.Enabled = !checkCount(5);
                     DataGridViewImageCell cell = item as DataGridViewImageCell;
                     cell.Value = Properties.Resources.num5;
-                    
+
                 }
             }
         }
@@ -353,7 +393,7 @@ namespace Sudoku
                     unhiddenCells.Add(item.RowIndex.ToString() + item.ColumnIndex.ToString());
                     num_6.Enabled = !checkCount(6);
                     DataGridViewImageCell cell = item as DataGridViewImageCell;
-                    cell.Value = Properties.Resources.num6;                    
+                    cell.Value = Properties.Resources.num6;
                 }
             }
         }
@@ -372,7 +412,7 @@ namespace Sudoku
                     DataGridViewImageCell cell = item as DataGridViewImageCell;
                     num_7.Enabled = !checkCount(7);
                     cell.Value = Properties.Resources.num7;
-                    
+
                 }
             }
         }
@@ -391,7 +431,7 @@ namespace Sudoku
                     DataGridViewImageCell cell = item as DataGridViewImageCell;
                     num_8.Enabled = !checkCount(8);
                     cell.Value = Properties.Resources.num8;
-                    
+
                 }
             }
         }
@@ -410,7 +450,7 @@ namespace Sudoku
                     DataGridViewImageCell cell = item as DataGridViewImageCell;
                     num_9.Enabled = !checkCount(9);
                     cell.Value = Properties.Resources.num9;
-                    
+
                 }
             }
         }
@@ -420,7 +460,7 @@ namespace Sudoku
             foreach (DataGridViewImageCell item in datagridview.SelectedCells)
             {
                 DataGridViewImageCell cell = item as DataGridViewImageCell;
-                cell.Value = Properties.Resources.help_36px;
+                cell.Value = Properties.Resources.help_32px1;
                 if (unhiddenCells.Contains(item.RowIndex.ToString() + item.ColumnIndex.ToString()))
                 {
                     unhiddenCells.Remove(item.RowIndex.ToString() + item.ColumnIndex.ToString());
@@ -472,7 +512,6 @@ namespace Sudoku
 
         #region Methods
 
-     
         private bool checkCount(int num)
         {
             int count = 0;
@@ -495,7 +534,7 @@ namespace Sudoku
             int col = 0;
             int row = 0;
             int unhideCount = 0;
-
+            button_play.Image = Properties.Resources.pause_32px;
             switch (level)
             {
                 case 1:
@@ -584,10 +623,8 @@ namespace Sudoku
                 mistakes++;
                 if (mistakes == 3)
                 {
-                    object sender = null;
-                    EventArgs ev = null;
                     MessageBox.Show("You do maximum mistakes.", "Game over", MessageBoxButtons.OK);
-                    button_stop_Click(sender, ev);
+                    restartGame();
                     return false;
                 }
                 else
@@ -604,7 +641,8 @@ namespace Sudoku
             return issafe;
         }
 
-        private void enableAllNums() {
+        private void enableAllNums()
+        {
             num_1.Enabled = true;
             num_2.Enabled = true;
             num_3.Enabled = true;
@@ -679,11 +717,97 @@ namespace Sudoku
                 }
             }
         }
-       
-         #endregion
-       
-        
-        
 
+        #endregion
+
+        #region Settings
+
+        private void button_settings_save_Click(object sender, EventArgs e)
+        {
+            if (gameLevel == 0)
+            {
+                gameLevel = newGameLavel;
+                createGrid();
+                generateNums();
+                datagridview.Enabled = true;
+                datagridview.Visible = true;
+                unhideNums(gameLevel);
+                label_game_level.Text = Enum.GetName(typeof(GameLevels), gameLevel);
+                label_mistakes.Text = "0/3";
+                started = true;
+                timer1.Start();
+                sw.Start();
+            }
+
+            soundOn = !checkBox_sound.Checked;
+            panel_settings.Visible = false;
+            gameLevel = newGameLavel;
+
+        }
+
+        private void radioButton_easy_CheckedChanged(object sender, EventArgs e)
+        {
+            if (radioButton_easy.Checked)
+            {
+                newGameLavel = 1;
+                radioButton_normal.Checked = false;
+                radioButton_hard.Checked = false;
+                radioButton_expert.Checked = false;
+            }
+        }
+
+        private void radioButton_normal_CheckedChanged(object sender, EventArgs e)
+        {
+            if (radioButton_normal.Checked)
+            {
+                newGameLavel = 2;
+                radioButton_easy.Checked = false;
+                radioButton_hard.Checked = false;
+                radioButton_expert.Checked = false;
+            }
+        }
+
+        private void radioButton_hard_CheckedChanged(object sender, EventArgs e)
+        {
+            if (radioButton_hard.Checked)
+            {
+                newGameLavel = 3;
+                radioButton_normal.Checked = false;
+                radioButton_easy.Checked = false;
+                radioButton_expert.Checked = false;
+            }
+        }
+
+        private void radioButton_expert_CheckedChanged(object sender, EventArgs e)
+        {
+            if (radioButton_expert.Checked)
+            {
+                newGameLavel = 4;
+                radioButton_normal.Checked = false;
+                radioButton_hard.Checked = false;
+                radioButton_easy.Checked = false;
+            }
+        }
+
+        private void button_settings_cancel_Click(object sender, EventArgs e)
+        {
+            panel_settings.Visible = false;
+        }
+
+        #endregion
+
+        private void button_restart_Click(object sender, EventArgs e)
+        {
+            restartGame();
+        }
     }
+
+    public enum GameLevels{
+     Easy = 1,
+     Normal = 2,
+     Hard = 3,
+     Expert = 4
+    }
+
+
 }

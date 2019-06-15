@@ -34,12 +34,23 @@
             this.label_timer = new System.Windows.Forms.Label();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.panel1 = new System.Windows.Forms.Panel();
+            this.panel_settings = new System.Windows.Forms.Panel();
+            this.checkBox_sound = new System.Windows.Forms.CheckBox();
+            this.groupBox_gameLevel = new System.Windows.Forms.GroupBox();
+            this.radioButton_expert = new System.Windows.Forms.RadioButton();
+            this.radioButton_hard = new System.Windows.Forms.RadioButton();
+            this.radioButton_normal = new System.Windows.Forms.RadioButton();
+            this.radioButton_easy = new System.Windows.Forms.RadioButton();
+            this.label5 = new System.Windows.Forms.Label();
+            this.button_settings_cancel = new System.Windows.Forms.Button();
+            this.button_settings_save = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label_mistakes = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label_game_level = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
+            this.button_settings = new System.Windows.Forms.Button();
             this.button_delete = new System.Windows.Forms.Button();
             this.num_9 = new System.Windows.Forms.Button();
             this.num_8 = new System.Windows.Forms.Button();
@@ -50,14 +61,15 @@
             this.num_3 = new System.Windows.Forms.Button();
             this.num_2 = new System.Windows.Forms.Button();
             this.num_1 = new System.Windows.Forms.Button();
-            this.button_stop = new System.Windows.Forms.Button();
             this.button_play = new System.Windows.Forms.Button();
             this.button_help = new System.Windows.Forms.Button();
             this.button_min = new System.Windows.Forms.Button();
             this.button_close = new System.Windows.Forms.Button();
-            this.button_pause = new System.Windows.Forms.Button();
+            this.button_restart = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.datagridview)).BeginInit();
             this.panel1.SuspendLayout();
+            this.panel_settings.SuspendLayout();
+            this.groupBox_gameLevel.SuspendLayout();
             this.SuspendLayout();
             // 
             // datagridview
@@ -112,12 +124,132 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.panel1.Controls.Add(this.panel_settings);
             this.panel1.Controls.Add(this.datagridview);
             this.panel1.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.panel1.Location = new System.Drawing.Point(12, 81);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(518, 352);
             this.panel1.TabIndex = 4;
+            // 
+            // panel_settings
+            // 
+            this.panel_settings.BackColor = System.Drawing.Color.White;
+            this.panel_settings.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_settings.Controls.Add(this.checkBox_sound);
+            this.panel_settings.Controls.Add(this.groupBox_gameLevel);
+            this.panel_settings.Controls.Add(this.label5);
+            this.panel_settings.Controls.Add(this.button_settings_cancel);
+            this.panel_settings.Controls.Add(this.button_settings_save);
+            this.panel_settings.Location = new System.Drawing.Point(168, 67);
+            this.panel_settings.Name = "panel_settings";
+            this.panel_settings.Size = new System.Drawing.Size(175, 227);
+            this.panel_settings.TabIndex = 2;
+            this.panel_settings.Visible = false;
+            // 
+            // checkBox_sound
+            // 
+            this.checkBox_sound.AutoSize = true;
+            this.checkBox_sound.Checked = true;
+            this.checkBox_sound.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox_sound.Font = new System.Drawing.Font("Sylfaen", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBox_sound.Location = new System.Drawing.Point(7, 31);
+            this.checkBox_sound.Name = "checkBox_sound";
+            this.checkBox_sound.Size = new System.Drawing.Size(57, 20);
+            this.checkBox_sound.TabIndex = 1;
+            this.checkBox_sound.Text = "Sound";
+            this.checkBox_sound.UseVisualStyleBackColor = true;
+            // 
+            // groupBox_gameLevel
+            // 
+            this.groupBox_gameLevel.Controls.Add(this.radioButton_expert);
+            this.groupBox_gameLevel.Controls.Add(this.radioButton_hard);
+            this.groupBox_gameLevel.Controls.Add(this.radioButton_normal);
+            this.groupBox_gameLevel.Controls.Add(this.radioButton_easy);
+            this.groupBox_gameLevel.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.groupBox_gameLevel.Font = new System.Drawing.Font("Sylfaen", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox_gameLevel.Location = new System.Drawing.Point(1, 59);
+            this.groupBox_gameLevel.Name = "groupBox_gameLevel";
+            this.groupBox_gameLevel.Size = new System.Drawing.Size(169, 134);
+            this.groupBox_gameLevel.TabIndex = 3;
+            this.groupBox_gameLevel.TabStop = false;
+            this.groupBox_gameLevel.Text = "Game level";
+            // 
+            // radioButton_expert
+            // 
+            this.radioButton_expert.AutoSize = true;
+            this.radioButton_expert.Location = new System.Drawing.Point(6, 103);
+            this.radioButton_expert.Name = "radioButton_expert";
+            this.radioButton_expert.Size = new System.Drawing.Size(62, 22);
+            this.radioButton_expert.TabIndex = 0;
+            this.radioButton_expert.Text = "Expert";
+            this.radioButton_expert.UseVisualStyleBackColor = true;
+            this.radioButton_expert.CheckedChanged += new System.EventHandler(this.radioButton_expert_CheckedChanged);
+            // 
+            // radioButton_hard
+            // 
+            this.radioButton_hard.AutoSize = true;
+            this.radioButton_hard.Location = new System.Drawing.Point(5, 75);
+            this.radioButton_hard.Name = "radioButton_hard";
+            this.radioButton_hard.Size = new System.Drawing.Size(54, 22);
+            this.radioButton_hard.TabIndex = 0;
+            this.radioButton_hard.Text = "Hard";
+            this.radioButton_hard.UseVisualStyleBackColor = true;
+            this.radioButton_hard.CheckedChanged += new System.EventHandler(this.radioButton_hard_CheckedChanged);
+            // 
+            // radioButton_normal
+            // 
+            this.radioButton_normal.AutoSize = true;
+            this.radioButton_normal.Location = new System.Drawing.Point(5, 47);
+            this.radioButton_normal.Name = "radioButton_normal";
+            this.radioButton_normal.Size = new System.Drawing.Size(68, 22);
+            this.radioButton_normal.TabIndex = 0;
+            this.radioButton_normal.Text = "Normal";
+            this.radioButton_normal.UseVisualStyleBackColor = true;
+            this.radioButton_normal.CheckedChanged += new System.EventHandler(this.radioButton_normal_CheckedChanged);
+            // 
+            // radioButton_easy
+            // 
+            this.radioButton_easy.AutoSize = true;
+            this.radioButton_easy.Location = new System.Drawing.Point(6, 19);
+            this.radioButton_easy.Name = "radioButton_easy";
+            this.radioButton_easy.Size = new System.Drawing.Size(51, 22);
+            this.radioButton_easy.TabIndex = 0;
+            this.radioButton_easy.Text = "Easy";
+            this.radioButton_easy.UseVisualStyleBackColor = true;
+            this.radioButton_easy.CheckedChanged += new System.EventHandler(this.radioButton_easy_CheckedChanged);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Sylfaen", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(2, 2);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(62, 22);
+            this.label5.TabIndex = 2;
+            this.label5.Text = "Settings";
+            // 
+            // button_settings_cancel
+            // 
+            this.button_settings_cancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button_settings_cancel.Location = new System.Drawing.Point(95, 199);
+            this.button_settings_cancel.Name = "button_settings_cancel";
+            this.button_settings_cancel.Size = new System.Drawing.Size(75, 23);
+            this.button_settings_cancel.TabIndex = 1;
+            this.button_settings_cancel.Text = "Cancel";
+            this.button_settings_cancel.UseVisualStyleBackColor = true;
+            this.button_settings_cancel.Click += new System.EventHandler(this.button_settings_cancel_Click);
+            // 
+            // button_settings_save
+            // 
+            this.button_settings_save.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button_settings_save.Location = new System.Drawing.Point(14, 199);
+            this.button_settings_save.Name = "button_settings_save";
+            this.button_settings_save.Size = new System.Drawing.Size(75, 23);
+            this.button_settings_save.TabIndex = 0;
+            this.button_settings_save.Text = "Save";
+            this.button_settings_save.UseVisualStyleBackColor = true;
+            this.button_settings_save.Click += new System.EventHandler(this.button_settings_save_Click);
             // 
             // label1
             // 
@@ -181,6 +313,18 @@
             this.label4.Size = new System.Drawing.Size(49, 22);
             this.label4.TabIndex = 8;
             this.label4.Text = "Time:";
+            // 
+            // button_settings
+            // 
+            this.button_settings.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button_settings.ForeColor = System.Drawing.Color.White;
+            this.button_settings.Image = global::Sudoku.Properties.Resources.settings_32px;
+            this.button_settings.Location = new System.Drawing.Point(50, 8);
+            this.button_settings.Name = "button_settings";
+            this.button_settings.Size = new System.Drawing.Size(32, 32);
+            this.button_settings.TabIndex = 10;
+            this.button_settings.UseVisualStyleBackColor = true;
+            this.button_settings.Click += new System.EventHandler(this.button_settings_Click);
             // 
             // button_delete
             // 
@@ -310,36 +454,17 @@
             this.num_1.UseVisualStyleBackColor = false;
             this.num_1.Click += new System.EventHandler(this.num1_Click);
             // 
-            // button_stop
-            // 
-            this.button_stop.BackColor = System.Drawing.Color.White;
-            this.button_stop.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button_stop.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_stop.ForeColor = System.Drawing.Color.Red;
-            this.button_stop.Image = global::Sudoku.Properties.Resources.stop;
-            this.button_stop.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button_stop.Location = new System.Drawing.Point(112, 8);
-            this.button_stop.Name = "button_stop";
-            this.button_stop.Size = new System.Drawing.Size(94, 32);
-            this.button_stop.TabIndex = 3;
-            this.button_stop.Text = "Stop";
-            this.button_stop.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.button_stop.UseVisualStyleBackColor = false;
-            this.button_stop.Click += new System.EventHandler(this.button_stop_Click);
-            // 
             // button_play
             // 
             this.button_play.BackColor = System.Drawing.Color.White;
             this.button_play.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button_play.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_play.ForeColor = System.Drawing.Color.LimeGreen;
-            this.button_play.Image = global::Sudoku.Properties.Resources.play;
-            this.button_play.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.button_play.ForeColor = System.Drawing.Color.Ivory;
+            this.button_play.Image = global::Sudoku.Properties.Resources.play_32px;
             this.button_play.Location = new System.Drawing.Point(12, 8);
             this.button_play.Name = "button_play";
-            this.button_play.Size = new System.Drawing.Size(94, 32);
+            this.button_play.Size = new System.Drawing.Size(32, 32);
             this.button_play.TabIndex = 3;
-            this.button_play.Text = "Play";
             this.button_play.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.button_play.UseVisualStyleBackColor = false;
             this.button_play.Click += new System.EventHandler(this.button_play_Click);
@@ -396,23 +521,17 @@
             this.button_close.MouseLeave += new System.EventHandler(this.button_close_MouseLeave);
             this.button_close.MouseHover += new System.EventHandler(this.button_close_MouseHover);
             // 
-            // button_pause
+            // button_restart
             // 
-            this.button_pause.BackColor = System.Drawing.Color.White;
-            this.button_pause.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button_pause.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_pause.ForeColor = System.Drawing.Color.DarkGoldenrod;
-            this.button_pause.Image = global::Sudoku.Properties.Resources.pause_squared_32px;
-            this.button_pause.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button_pause.Location = new System.Drawing.Point(12, 8);
-            this.button_pause.Name = "button_pause";
-            this.button_pause.Size = new System.Drawing.Size(94, 32);
-            this.button_pause.TabIndex = 10;
-            this.button_pause.Text = "Pause";
-            this.button_pause.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.button_pause.UseVisualStyleBackColor = false;
-            this.button_pause.Visible = false;
-            this.button_pause.Click += new System.EventHandler(this.button_pause_Click);
+            this.button_restart.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button_restart.ForeColor = System.Drawing.Color.White;
+            this.button_restart.Image = global::Sudoku.Properties.Resources.restart_32px;
+            this.button_restart.Location = new System.Drawing.Point(88, 8);
+            this.button_restart.Name = "button_restart";
+            this.button_restart.Size = new System.Drawing.Size(32, 32);
+            this.button_restart.TabIndex = 10;
+            this.button_restart.UseVisualStyleBackColor = true;
+            this.button_restart.Click += new System.EventHandler(this.button_restart_Click);
             // 
             // Main
             // 
@@ -421,7 +540,8 @@
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.ClientSize = new System.Drawing.Size(542, 495);
             this.ControlBox = false;
-            this.Controls.Add(this.button_pause);
+            this.Controls.Add(this.button_restart);
+            this.Controls.Add(this.button_settings);
             this.Controls.Add(this.label_mistakes);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label_game_level);
@@ -439,7 +559,6 @@
             this.Controls.Add(this.num_2);
             this.Controls.Add(this.num_1);
             this.Controls.Add(this.panel1);
-            this.Controls.Add(this.button_stop);
             this.Controls.Add(this.button_play);
             this.Controls.Add(this.label_timer);
             this.Controls.Add(this.button_help);
@@ -455,6 +574,10 @@
             this.Text = "Sudoku";
             ((System.ComponentModel.ISupportInitialize)(this.datagridview)).EndInit();
             this.panel1.ResumeLayout(false);
+            this.panel_settings.ResumeLayout(false);
+            this.panel_settings.PerformLayout();
+            this.groupBox_gameLevel.ResumeLayout(false);
+            this.groupBox_gameLevel.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -467,7 +590,6 @@
         private System.Windows.Forms.Label label_timer;
         private System.Windows.Forms.Button button_min;
         private System.Windows.Forms.Button button_play;
-        private System.Windows.Forms.Button button_stop;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button num_1;
@@ -487,7 +609,18 @@
         private System.Windows.Forms.Label label_game_level;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button button_help;
-        private System.Windows.Forms.Button button_pause;
+        private System.Windows.Forms.Button button_settings;
+        private System.Windows.Forms.Panel panel_settings;
+        private System.Windows.Forms.CheckBox checkBox_sound;
+        private System.Windows.Forms.GroupBox groupBox_gameLevel;
+        private System.Windows.Forms.RadioButton radioButton_expert;
+        private System.Windows.Forms.RadioButton radioButton_hard;
+        private System.Windows.Forms.RadioButton radioButton_normal;
+        private System.Windows.Forms.RadioButton radioButton_easy;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Button button_settings_cancel;
+        private System.Windows.Forms.Button button_settings_save;
+        private System.Windows.Forms.Button button_restart;
     }
 }
 

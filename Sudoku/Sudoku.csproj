@@ -59,19 +59,10 @@
     <Compile Include="Main.Designer.cs">
       <DependentUpon>Main.cs</DependentUpon>
     </Compile>
-    <Compile Include="GameLevel.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="GameLevel.Designer.cs">
-      <DependentUpon>GameLevel.cs</DependentUpon>
-    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GameLevel.resx">
-      <DependentUpon>GameLevel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -110,15 +101,6 @@
     <None Include="Resources\minimize_2.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\play.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\stop.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\pause.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\num1.png" />
   </ItemGroup>
   <ItemGroup>
@@ -146,16 +128,22 @@
     <None Include="Resources\num9.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\help_36px.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\delete.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\help_32px.png" />
+    <None Include="Resources\help_32px1.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\help_32px1.png" />
+    <None Include="Resources\play_32px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\pause_32px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\settings_32px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\restart_32px.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
